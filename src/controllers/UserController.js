@@ -68,6 +68,13 @@ class UserController{
                 })
             }
 
+            //check if the email already exists
+            if(await User.findOne(req.params.email)){
+                return res.status(400).json({
+                    message: 'Email already exits'
+                })
+            }
+
             if(req.body.password){
                 req.body.password = await bcrypt.hash(req.body.password, 8);
             }
