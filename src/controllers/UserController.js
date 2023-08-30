@@ -63,7 +63,7 @@ class UserController{
             const user = await User.findById(req.params.id);
 
             if(!user){
-                return res.status(400).json({
+                return res.status(422).json({
                     message: 'User not found'
                 })
             }
@@ -89,9 +89,24 @@ class UserController{
 
     async delete(req, res){
         try{
+            if(!req.params.id){
+                return res.status(400).json({
+                    message: 'Missing id'
+                })
+            }
 
+            const user = await User.findById(req.params.id);
+
+            if(!user){
+                return res.status(422).json({
+                    message: 'User not found'
+                })
+            }
+
+            await User.deleteOne({_id: req.params.id});
+            res.status(200).json({message: 'User successfully deleted'});
         }catch(error){
-            
+            console.log(error);
         }
     }
 }
