@@ -48,15 +48,35 @@ class UserController{
             const user = await User.findById(req.params.id);
             return res.json(user);
         }catch(error){
-            
+            return res.json(null)
         }
     }
 
     async update(req, res){
         try{
+            if(!req.params.id){
+                return res.status(400).json({
+                    message: 'Missing id'
+                })
+            }
 
+            const user = await User.findById(req.params.id);
+
+            if(!user){
+                return res.status(400).json({
+                    message: 'User not found'
+                })
+            }
+
+            if(req.body.password){
+                req.body.password = await bcrypt.hash(req.body.password, 8);
+            }
+
+
+            const newUser = await User.updateOne({_id: req.params.id}, req.body)
+            return res.json(newUser);
         }catch(error){
-            
+            console.log(error)
         }
     }
 
