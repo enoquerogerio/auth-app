@@ -24,7 +24,7 @@ class TokenController {
     }
 
     //create token for user
-    const { id } = user
+    const  id  = user._id
     const token = jwt.sign({id, email}, process.env.TOKEN_KEY, {
       expiresIn: process.env.TOKEN_EXPIRATION
     });
