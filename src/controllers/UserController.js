@@ -28,7 +28,7 @@ class UserController {
         email: email.toLowerCase(),
         password: encryptedPassword,
       });
-      return res.status(201).json({ message: "Person successfully created" });
+      return res.json(user);
     } catch (error) {
       console.log(error);
       return;
@@ -45,7 +45,7 @@ class UserController {
   }
   async show(req, res) {
     try {
-      const user = await User.findById(req.params.id, { password: 0 });
+      const user = await User.findById(req.id, { password: 0 });
       return res.json(user);
     } catch (error) {
       return res.json(null);
@@ -54,13 +54,7 @@ class UserController {
 
   async update(req, res) {
     try {
-      if (!req.params.id) {
-        return res.status(400).json({
-          message: "Missing id",
-        });
-      }
-
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.id, { password: 0 });
 
       if (!user) {
         return res.status(422).json({
@@ -82,7 +76,7 @@ class UserController {
         req.body.password = await bcrypt.hash(req.body.password, 8);
       }
 
-      const newUser = await User.updateOne({ _id: req.params.id }, req.body);
+      const newUser = await User.updateOne({ _id: req.id }, req.body);
       return res.json(newUser);
     } catch (error) {
       console.log(error);
@@ -91,13 +85,13 @@ class UserController {
 
   async delete(req, res) {
     try {
-      if (!req.params.id) {
+      if (!req.id) {
         return res.status(400).json({
           message: "Missing id",
         });
       }
 
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.id);
 
       if (!user) {
         return res.status(422).json({
@@ -105,7 +99,7 @@ class UserController {
         });
       }
 
-      await User.deleteOne({ _id: req.params.id });
+      await User.deleteOne({ _id: req.id });
       res.status(200).json({ message: "User successfully deleted" });
     } catch (error) {
       console.log(error);
