@@ -36,7 +36,8 @@ class UserController {
   }
   async index(req, res) {
     try {
-      const user = await User.find();
+      //sort in ascending order byu first_name and do not include password
+      const user = await User.find({}, {password: 0});
       return res.json(user);
     } catch (error) {
       console.log(error);
@@ -44,7 +45,7 @@ class UserController {
   }
   async show(req, res) {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.params.id, { password: 0 });
       return res.json(user);
     } catch (error) {
       return res.json(null);
