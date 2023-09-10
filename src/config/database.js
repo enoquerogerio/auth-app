@@ -13,7 +13,7 @@ exports.connect = () =>{
             console.log('Successfully connected to database');
         })
         .catch((error) => {
-            console.log('databasenconnection failed. exiting now...');
+            console.log('database connection failed. exiting now...');
             console.log(error);
             process.exit(1);
         })

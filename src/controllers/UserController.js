@@ -45,7 +45,8 @@ class UserController {
   }
   async show(req, res) {
     try {
-      const user = await User.findById(req.id, { password: 0 });
+      const user = await User.findById(req.params.id, { password: 0 });
+      console.log(user)
       return res.json(user);
     } catch (error) {
       return res.json(null);
@@ -85,12 +86,6 @@ class UserController {
 
   async delete(req, res) {
     try {
-      if (!req.id) {
-        return res.status(400).json({
-          message: "Missing id",
-        });
-      }
-
       const user = await User.findById(req.id);
 
       if (!user) {

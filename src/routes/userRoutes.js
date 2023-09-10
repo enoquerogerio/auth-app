@@ -8,7 +8,7 @@ router.get('/', login,  userController.index);
 
 
 router.post('/', userController.store);
-router.get('/', login, userController.show);
+router.get('/:id', login, userController.show);
 router.put('/', login, userController.update);
 router.delete('/', login,  userController.delete);
 export default router; 
