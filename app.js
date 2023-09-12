@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('./src/config/database').connect();
+import path from 'path'
 import express from 'express'
 import userRoutes from './src/routes/userRoutes';
 import tokenRoutes from './src/routes/tokenRoutes';
@@ -15,6 +16,7 @@ class App {
     middlewares(){
         this.app.use(express.urlencoded({extended: true}))
         this.app.use(express.json())
+        this.app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
     }
 
     routes(){

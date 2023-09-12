@@ -46,7 +46,6 @@ class UserController {
   async show(req, res) {
     try {
       const user = await User.findById(req.params.id, { password: 0 });
-      console.log(user)
       return res.json(user);
     } catch (error) {
       return res.json(null);
