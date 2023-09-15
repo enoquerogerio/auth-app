@@ -12,11 +12,9 @@ function Register() {
   const { name, password } = formData;
 
   const onChange = (e) =>{
-    console.log(e)
     setFormData((prevState) => ({
         ...prevState,
         [e.target.name]: e.target.value,
-        [e.target.password]: e.target.value,
     }))
   }
   const handleSubmit = e =>{
@@ -24,7 +22,6 @@ function Register() {
     if(name.length < 6 || name.length > 50){
         console.log("")
     }
-    console.log(email, password)
   }
   return (
     <>

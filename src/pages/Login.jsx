@@ -12,11 +12,9 @@ function Login() {
   const { name, password } = formData;
 
   const onChange = (e) =>{
-    console.log(e)
     setFormData((prevState) => ({
         ...prevState,
         [e.target.name]: e.target.value,
-        [e.target.password]: e.target.value,
     }))
   }
   const handleSubmit = e =>{
