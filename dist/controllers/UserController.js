@@ -1,5 +1,5 @@
-import User from "../models/User";
-import bcrypt from "bcrypt";
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _User = require('../models/User'); var _User2 = _interopRequireDefault(_User);
+var _bcrypt = require('bcrypt'); var _bcrypt2 = _interopRequireDefault(_bcrypt);
 
 class UserController {
   async store(req, res) {
@@ -13,7 +13,7 @@ class UserController {
       }
 
       //Check if user already exist
-      const oldUser = await User.findOne({ email });
+      const oldUser = await _User2.default.findOne({ email });
 
       if (oldUser) {
         res.status(409).send("User already exist. Please Login");
@@ -21,10 +21,10 @@ class UserController {
       }
 
       //encrypt user password
-      const encryptedPassword = await bcrypt.hash(password, 8);
+      const encryptedPassword = await _bcrypt2.default.hash(password, 8);
 
       //create user in database
-      const user = await User.create({
+      const user = await _User2.default.create({
         email: email.toLowerCase(),
         password: encryptedPassword,
       });
@@ -36,7 +36,7 @@ class UserController {
   async index(req, res) {
     try {
       //sort in ascending order byu first_name and do not include password
-      const user = await User.find({}, {password: 0});
+      const user = await _User2.default.find({}, {password: 0});
       return res.json(user);
     } catch (error) {
       return res.status(500).json({message: "Something went wrong"})
@@ -48,7 +48,7 @@ class UserController {
         return res.status(400).json({message: "Missing user id"})
       }
 
-      const user = await User.findById(req.params.id, { password: 0 });
+      const user = await _User2.default.findById(req.params.id, { password: 0 });
       return res.json(user);
     } catch (error) {
       return res.json(null);
@@ -57,7 +57,7 @@ class UserController {
 
   async update(req, res) {
     try {
-      const user = await User.findById(req.id, { password: 0 });
+      const user = await _User2.default.findById(req.id, { password: 0 });
 
       if (!user) {
         return res.status(422).json({
@@ -68,7 +68,7 @@ class UserController {
       //check if the email already exists
       if (req.body.email) {
         const { email } = req.body;
-        if (await User.findOne({email})) {
+        if (await _User2.default.findOne({email})) {
           return res.status(400).json({
             message: "Email already exits",
           });
@@ -76,10 +76,10 @@ class UserController {
       }
 
       if (req.body.password) {
-        req.body.password = await bcrypt.hash(req.body.password, 8);
+        req.body.password = await _bcrypt2.default.hash(req.body.password, 8);
       }
 
-      const newUser = await User.updateOne({ _id: req.id }, req.body);
+      const newUser = await _User2.default.updateOne({ _id: req.id }, req.body);
       return res.json(newUser);
     } catch (error) {
       return res.status(500).json({message: "Something went wrong"})
@@ -88,7 +88,7 @@ class UserController {
 
   async delete(req, res)  {
     try {
-      const user = await User.findById(req.id);
+      const user = await _User2.default.findById(req.id);
 
       if (!user) {
         return res.status(422).json({
@@ -96,7 +96,7 @@ class UserController {
         });
       }
 
-      await User.deleteOne({ _id: req.id });
+      await _User2.default.deleteOne({ _id: req.id });
       res.status(200).json({ message: "User successfully deleted" });
     } catch (error) {
       return res.status(500).json({message: "Something went wrong"})
@@ -104,7 +104,7 @@ class UserController {
   }
 }
 
-export default new UserController();
+exports. default = new UserController();
 
 /*
 index -> list all users -> GET
