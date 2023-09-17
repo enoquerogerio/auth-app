@@ -1,35 +1,35 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 class TokenController {
-  async store(req, res){
-    const {email = '', password = ''} = req.body;
+  async store(req, res) {
+    const { email = "", password = "" } = req.body;
 
     //check if user send email or password
-    if(!email || !password){
-      return res.status(401).json({message: "Invalid credentials"})
+    if (!email || !password) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     //check if  email exists
-    const user = await User.findOne({email});
-    if(!user){
-      return res.status(400).json({message: "User not found"}) 
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
     }
 
     //check password
-    const passwordUser = await bcrypt.compare(password, user.password)
-    if(!passwordUser){
-      return res.status(401).json({message: "Wrong password!"})
+    const passwordUser = await bcrypt.compare(password, user.password);
+    if (!passwordUser) {
+      return res.status(401).json({ message: "Wrong password!" });
     }
 
     //create token for user
-    const  id  = user._id
-    const token = jwt.sign({id, email}, process.env.TOKEN_KEY, {
-      expiresIn: process.env.TOKEN_EXPIRATION
+    const id = user._id;
+    const token = jwt.sign({ id, email }, process.env.TOKEN_KEY, {
+      expiresIn: process.env.TOKEN_EXPIRATION,
     });
 
-    res.json({ token });
+    return res.json({ token, user: { name: user.first_name, email, id } });
   }
 }
 

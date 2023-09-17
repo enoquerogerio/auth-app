@@ -2,6 +2,9 @@ require("dotenv").config();
 require("./config/database").connect();
 import path from "path";
 import express from "express";
+import cors from 'cors'
+import helmet from 'helmet'
+
 import userRoutes from "./routes/userRoutes";
 import tokenRoutes from "./routes/tokenRoutes";
 import photoRoutes from "./routes/photoRoutes";
@@ -14,6 +17,8 @@ class App {
   }
 
   middlewares() {
+    this.app.use(cors())
+    this.app.use(helmet())
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.use(
