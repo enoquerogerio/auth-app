@@ -30,8 +30,7 @@ class UserController {
       });
       return res.json(user);
     } catch (error) {
-      console.log(error);
-      return;
+      return res.status(500).json({message: "Something went wrong"})
     }
   }
   async index(req, res) {
@@ -40,11 +39,15 @@ class UserController {
       const user = await User.find({}, {password: 0});
       return res.json(user);
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({message: "Something went wrong"})
     }
   }
   async show(req, res) {
     try {
+      if(!req.params.id){
+        return res.status(400).json({message: "Missing user id"})
+      }
+
       const user = await User.findById(req.params.id, { password: 0 });
       return res.json(user);
     } catch (error) {
@@ -79,7 +82,7 @@ class UserController {
       const newUser = await User.updateOne({ _id: req.id }, req.body);
       return res.json(newUser);
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({message: "Something went wrong"})
     }
   }
 
@@ -96,7 +99,7 @@ class UserController {
       await User.deleteOne({ _id: req.id });
       res.status(200).json({ message: "User successfully deleted" });
     } catch (error) {
-      console.log(error);
+      return res.status(500).json({message: "Something went wrong"})
     }
   }
 }

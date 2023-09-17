@@ -4,7 +4,7 @@ import login from "../middlewares/login";
 const router  = new Router();
 
 
-router.get('/', login,  userController.index);
+router.get('/', userController.index);
 
 
 router.post('/', userController.store);
