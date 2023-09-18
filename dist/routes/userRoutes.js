@@ -4,7 +4,7 @@ var _login = require('../middlewares/login'); var _login2 = _interopRequireDefau
 const router  = new (0, _express.Router)();
 
 
-router.get('/', _UserController2.default.index);
+router.get('/', _login2.default, _UserController2.default.index);
 
 
 router.post('/', _UserController2.default.store);
