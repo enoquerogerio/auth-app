@@ -9,7 +9,7 @@ function App() {
     <>
       <Router>
         <main className='container'>
-          <Dropdown />
+          <Dropdown /> 
           <MyRoutes />
           <ToastContainer autoClose={3000} className="toast-container"/>
         </main>
