@@ -1,15 +1,17 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { isEmail } from "validator";
 import { BsEnvelope, BsKey, BsGithub, BsGoogle } from "react-icons/bs";
 
 function Register() {
   const [formData, setFormData] = useState({
-    name: "",
+    email: "",
     password: "",
   });
 
-  const { name, password } = formData;
+  const { email, password } = formData;
 
   const onChange = (e) =>{
     setFormData((prevState) => ({
@@ -19,9 +21,17 @@ function Register() {
   }
   const handleSubmit = e =>{
     e.preventDefault();
-    if(name.length < 6 || name.length > 50){
-        console.log("")
+    let formErrors = false;
+
+    if(!isEmail(email)){
+        formErrors = true;
+        toast.error('')
     }
+    
+    if(password.length < 6 || password.length > 50){
+      formErrors = true;
+      toast.error('')
+  }
   }
   return (
     <>
@@ -35,9 +45,9 @@ function Register() {
             <input
               type="text"
               className="form-control"
-              id="name"
-              name="name"
-              value={name}
+              id="email"
+              name="email"
+              value={email}
               placeholder="Email"
               onChange={onChange}
             />
