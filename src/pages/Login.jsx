@@ -2,28 +2,38 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsEnvelope, BsKey, BsGithub, BsGoogle } from "react-icons/bs";
+import isEmail from "validator/lib/isEmail";
 
 function Login() {
   const [formData, setFormData] = useState({
-    name: "",
+    email: "",
     password: "",
   });
 
-  const { name, password } = formData;
+  const { email, password } = formData;
 
-  const onChange = (e) =>{
+  const onChange = (e) => {
     setFormData((prevState) => ({
-        ...prevState,
-        [e.target.name]: e.target.value,
-    }))
-  }
-  const handleSubmit = e =>{
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(name.length < 6 || name.length > 50){
-        console.log("")
+    let formErrors = false;
+
+    if (!isEmail(email)) {
+      formErrors = true;
+      toast.error("Invalid e-mail");
     }
-    console.log(email, password)
-  }
+
+    if (password.length < 6 || password.length > 50) {
+      formErrors = true;
+      toast.error("The password must be between 6 and 50 characters long");
+    }
+
+    if (formErrors) return;
+  };
   return (
     <>
       <section className="heading">
@@ -36,9 +46,9 @@ function Login() {
             <input
               type="text"
               className="form-control"
-              id="name"
-              name="name"
-              value={name}
+              id="email"
+              name="email"
+              value={email}
               placeholder="Email"
               onChange={onChange}
             />
@@ -56,7 +66,7 @@ function Login() {
           </div>
           <div className="form-group">
             <button type="submit" className="btn btn-block">
-                Submit
+              Submit
             </button>
           </div>
         </form>
@@ -64,18 +74,22 @@ function Login() {
       <section className="">
         <span>or continue with these social profile</span>
         <div className="social-link">
-            <Link to="/"><BsGithub /></Link>
-            <Link to="/"><BsGoogle /></Link>
+          <Link to="/">
+            <BsGithub />
+          </Link>
+          <Link to="/">
+            <BsGoogle />
+          </Link>
         </div>
         <div className="">
-            <p>Don’t have an account yet?</p>
-            <Link to="/register">
-                <span className="register">Register</span>
-            </Link>
+          <p>Don’t have an account yet?</p>
+          <Link to="/register">
+            <span className="register">Register</span>
+          </Link>
         </div>
       </section>
     </>
   );
 }
 
-export default Login
+export default Login;
