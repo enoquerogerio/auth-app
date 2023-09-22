@@ -133,3 +133,56 @@ h3 {
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
 }
+
+/*TABLE CSS*/
+.table-container{
+  border: 1px solid #E0E0E0;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 2px 4px -1px rgba(57, 76, 96, 0.15);
+}
+.table-container th {
+  text-align: left;
+  padding: 8px;
+}
+.table-container thead th{
+  padding: 30px;
+}
+.table-container thead th:nth-child(even){
+  text-align: center;
+}
+.table-container thead #edit{
+  display: block;
+  border: 1px solid #E0E0E0;
+  padding: 5px;
+  border-radius: 12px;
+  width: 100px;
+  float: right;
+  color: #BDBDBD;
+  font-weight: 500;
+}
+
+.table-container thead #edit:hover{
+  background-color: #f5f5f5;
+}
+
+.table-container thead th {
+  border-bottom: 1px solid #E0E0E0;
+}
+.table-container tbody td{
+  text-align: left;
+  padding: 10px;
+  color: #BDBDBD;
+  font-size: 13px;
+  border-right: 1px solid #E0E0E0;
+}
+.table-container tbody tr:nth-child(even){
+  background: #F8F8F8;
+}
+.table-container tbody th {
+  padding: 10px;
+  color: #333333;
+  font-size: 18px;
+  font-weight: 500;
+}
