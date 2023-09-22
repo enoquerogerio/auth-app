@@ -8,7 +8,7 @@ class UserController {
 
       //Validate input
       if (!(email && password)) {
-        res.status(400).send("All input is required");
+        res.status(400).json({message: "All input is required"});
         return;
       }
 
@@ -16,7 +16,7 @@ class UserController {
       const oldUser = await User.findOne({ email });
 
       if (oldUser) {
-        res.status(409).send("User already exist. Please Login");
+        res.status(409).json({message: "Email already exist. Please Login"});
         return;
       }
 
