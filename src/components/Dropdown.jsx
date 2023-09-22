@@ -1,10 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { logout, reset } from "../store/auth/authSlice";
 function Dropdown() {
   const dropdownRef = useRef(null);
   const [isToggleChecked, setIsToggleChecked] = useState(false);
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout())
+    dispatch(reset())
+    navigate('/')
+  }
 
   const handleToggleClick = () => {
     setIsToggleChecked(!isToggleChecked);
@@ -45,10 +57,10 @@ function Dropdown() {
             Profile
           </Link>
           <Link id="a">Group Chat</Link>
-          <Link id="a" to="/login">
+          <button onClick={handleLogout} id="a" className="btnLogout">
             <hr />
             Logout
-          </Link>
+          </button>
         </div>
       </div>
     </div>
