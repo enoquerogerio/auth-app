@@ -31,6 +31,7 @@ function Profile() {
   if (isLoading) {
     return <Spinner />;
   }
+  
   return (
     <>
       <section>
@@ -64,7 +65,7 @@ function Profile() {
             </tr>
             <tr>
               <td>EMAIL</td>
-              <th>{user["user"].email}</th>
+              <th>{user ? user["user"].email : ''}</th>
             </tr>
           </tbody>
         </table>
