@@ -36,7 +36,7 @@ class TokenController {
         id,
         first_name: user.first_name,
         last_name: user.last_name,
-        bio: user.bio,
+        biography: user.biography,
         phone: user.phone,
       },
     });
