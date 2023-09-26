@@ -13,7 +13,7 @@ export default async (req, res, next) =>{
     try {
         const decoded = jwt.verify(token, process.env.TOKEN_KEY);
         const { id, email } = decoded
-
+        
         const user = await User.findOne({ _id: id, email })
         if(!user){
             return res.status(401).json({message: "Invalid user"})

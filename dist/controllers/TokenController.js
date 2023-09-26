@@ -13,7 +13,6 @@ class TokenController {
 
     //check if  email exists
     const user = await _User2.default.findOne({ email });
-    console.log(user)
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }

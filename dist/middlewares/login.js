@@ -13,7 +13,7 @@ exports. default = async (req, res, next) =>{
     try {
         const decoded = _jsonwebtoken2.default.verify(token, process.env.TOKEN_KEY);
         const { id, email } = decoded
-
+        
         const user = await _User2.default.findOne({ _id: id, email })
         if(!user){
             return res.status(401).json({message: "Invalid user"})
