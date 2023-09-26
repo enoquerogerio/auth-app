@@ -13,6 +13,7 @@ class TokenController {
 
     //check if  email exists
     const user = await User.findOne({ email });
+    console.log(user)
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
@@ -31,14 +32,7 @@ class TokenController {
 
     return res.json({
       token,
-      user: {
-        email,
-        id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        biography: user.biography,
-        phone: user.phone,
-      },
+      user: user,
     });
   }
 }
