@@ -1,12 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { get } from "loadsh"
+import { BsPerson } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from "../components/Spinner";
 import { reset } from "../store/auth/authSlice";
 
 function Profile() {
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -28,10 +32,12 @@ function Profile() {
     };
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
+  
+
   if (isLoading) {
     return <Spinner />;
   }
-  
+
   return (
     <>
       <section>
@@ -46,28 +52,39 @@ function Profile() {
               </th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>PHOTO</td>
-              <th>Profile</th>
-            </tr>
-            <tr>
-              <td>NAME</td>
-              <th>Enoque Rogério</th>
-            </tr>
-            <tr>
-              <td>BIO</td>
-              <th>FC Barcelona</th>
-            </tr>
-            <tr>
-              <td>PHONE</td>
-              <th>943034730</th>
-            </tr>
-            <tr>
-              <td>EMAIL</td>
-              <th>{user ? user["user"].email : ''}</th>
-            </tr>
-          </tbody>
+          {user &&  (
+            <tbody>
+              <tr>
+                <td>PHOTO</td>
+                <th>
+                  {get(user, 'user.photo' ? '' : 'user.imageUrl', false) ? (
+                    <img crossOrigin="anonymous" src={user.user.imageUrl} alt=""/>
+                  ) : (
+                    <BsPerson size={36}/>
+                  )}
+                  
+                </th>
+              </tr>
+              <tr>
+                <td>NAME</td>
+                <th>
+                  {user.user.first_name} {user.user.last_name}
+                </th>
+              </tr>
+              <tr>
+                <td>biography</td>
+                <th>{user.user.biography}</th>
+              </tr>
+              <tr>
+                <td>PHONE</td>
+                <th>{user.user.phone}</th>
+              </tr>
+              <tr>
+                <td>EMAIL</td>
+                <th>{user.user.email}</th>
+              </tr>
+            </tbody>
+          )}
         </table>
       </section>
     </>

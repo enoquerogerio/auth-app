@@ -19,10 +19,37 @@ const logout = () => {
     localStorage.removeItem('user')
 }
 
+const edit = async (userData) => {
+    
+    const userStored = JSON.parse(localStorage.getItem('user'))
+    axios.defaults.headers.Authorization = `Bearer ${userStored.token}`
+    await axios.put('/users/', userData)
+
+    //get user
+    const response = await user(userStored.user.id, userStored.token);
+
+    //merge objects
+    for(const key in response){
+        userStored.user[key] = response[key]
+    }
+    localStorage.setItem('user', JSON.stringify(userStored))
+
+    return userStored
+}
+
+const user = async(id, token) => {
+    axios.defaults.headers.Authorization = `Bearer ${token}`
+    const response = await axios.get(`/users/${id}`)
+
+    return response.data
+}
+
 const authService = {
     register,
     login,
-    logout
+    logout,
+    edit, 
+    user
 }
 
 export default authService

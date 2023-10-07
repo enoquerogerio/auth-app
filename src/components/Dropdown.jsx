@@ -49,9 +49,12 @@ function Dropdown() {
       onClick={handleToggleClick}
       ref={dropdownRef}>
       <div className="dropdown">
-        <p id="a" href="#">
-          Enoque<span>+</span>
-        </p>
+        {user && (
+          <p id="a" href="#">
+          {user.user.first_name || 'guest'}<span>+</span>
+          </p>
+        )}
+        
         <div className="menu">
           <Link id="a" to="/">
             Profile

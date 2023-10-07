@@ -5,32 +5,35 @@ import { toast } from "react-toastify";
 import { isEmail } from "validator";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { register, reset } from "../store/auth/authSlice";
+import { edit, reset } from "../store/auth/authSlice";
 import Spinner from "../components/Spinner";
 
 function Edit() {
-  const emailStored = useSelector(state => state.auth.user.user.email)
-  const firstNameStored = useSelector(state => state.auth.user.user.first_name)
-  const lastNameStored = useSelector(state => state.auth.user)
-  const bioStored = useSelector(state => state.auth.user)
-  const phoneStored = useSelector(state => state.auth.user)
+  const emailStored = useSelector((state) => state.auth.user.user.email);
+  const firstNameStored = useSelector(
+    (state) => state.auth.user.user.first_name
+  );
+  const lastNameStored = useSelector((state) => state.auth.user.user.last_name);
+  const biographyStored = useSelector(
+    (state) => state.auth.user.user.biography
+  );
+  const phoneStored = useSelector((state) => state.auth.user.user.phone);
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     first_name: "",
     last_name: "",
-    bio: "",
+    biography: "",
     phone: "",
   });
-  
 
-  const { email, password, first_name, last_name, bio, phone } = formData;
+  let { email, password, first_name, last_name, biography, phone } = formData;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
 
@@ -39,13 +42,35 @@ function Edit() {
       toast.error(message);
     }
 
+    if (!user.user.id) return;
+
+    setFormData({
+      email: emailStored,
+      first_name: firstNameStored,
+      last_name: lastNameStored,
+      biography: biographyStored,
+      phone: phoneStored,
+    });
+
     if (isSuccess) {
-      toast.success("Registration successful");
-      navigate("/login");
+      toast.success("Update successful");
+      navigate("/");
     }
 
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [
+    user,
+    isError,
+    isSuccess,
+    message,
+    navigate,
+    dispatch,
+    emailStored,
+    firstNameStored,
+    lastNameStored,
+    biographyStored,
+    phoneStored,
+  ]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -57,16 +82,52 @@ function Edit() {
     e.preventDefault();
     let formErrors = false;
 
-    if (!isEmail(email)) {
-      formErrors = true;
-      toast.error("Invalid e-mail");
+    if(emailStored !== email){
+      if (!isEmail(email)) {
+        formErrors = true;
+        toast.error("Invalid e-mail");
+      }
     }
 
+    if (
+      first_name.length < 3 ||
+      first_name.length > 255 ||
+      last_name.length < 3 ||
+      last_name.length > 255
+    ) {
+      formErrors = true;
+      toast.error(
+        "The first name and last name must be between 3 and 255 characters long"
+      );
+    }
+
+    if (biography.length < 10 || biography.length > 255) {
+      formErrors = true;
+      toast.error("The biography must be between 10 and 255 characters long");
+    }
+
+    if (!password) {
+      password = undefined;
+    } else {
+      if (password.length < 6 || password.length > 50) {
+        formErrors = true;
+        toast.error("The password must be between 6 and 50 characters long");
+      }
+    }
 
     if (formErrors) return;
-
-    const userData = { email, password };
-    dispatch(register(userData));
+    if(emailStored === email){
+      email = undefined
+    }
+    const userData = {
+      email,
+      password,
+      first_name,
+      last_name,
+      biography,
+      phone,
+    };
+    dispatch(edit(userData));
   };
 
   if (isLoading) {
@@ -77,7 +138,7 @@ function Edit() {
     <>
       <section className="update-container">
         <div>
-          <Link to='/'>Back</Link>
+          <Link to="/">Back</Link>
         </div>
         <div className="">
           <span>Change Info</span>
@@ -90,7 +151,7 @@ function Edit() {
                   className="form-control"
                   id="first_name"
                   name="first_name"
-                  value={firstNameStored || ''}
+                  value={first_name}
                   placeholder="Enter your first Name"
                   onChange={onChange}
                 />
@@ -108,13 +169,13 @@ function Edit() {
                 />
               </div>
               <div className="form-group">
-                <label>Bio</label>
+                <label>biography</label>
                 <textarea
                   className="form-control"
-                  id="bio"
-                  name="bio"
-                  value={bio}
-                  placeholder="Enter your bio..."
+                  id="biography"
+                  name="biography"
+                  value={biography}
+                  placeholder="Enter your biography..."
                   onChange={onChange}
                 />
               </div>
@@ -125,7 +186,7 @@ function Edit() {
                   className="form-control"
                   id="email"
                   name="email"
-                  value={emailStored}
+                  value={email}
                   placeholder="Enter your email..."
                   onChange={onChange}
                   autoComplete="off"
