@@ -3,11 +3,12 @@ var _mongoose = require('mongoose'); var _mongoose2 = _interopRequireDefault(_mo
 
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASS;
+const mongoURI = process.env.MongoURI;
 
 exports.connect = () => {
   _mongoose2.default
     .connect(
-      `mongodb+srv://${dbUser}:${dbPassword}@authjwtapi.uqtp719.mongodb.net/authAppretryWrites=true&w=majority`,
+      `mongodb+srv://${dbUser}:${dbPassword}${mongoURI}`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
